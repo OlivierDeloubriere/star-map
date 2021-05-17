@@ -1,0 +1,58 @@
+:root {
+    --clr-bg: #333;
+    --clr-txt: rgb(255, 226, 206);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: var(--clr-bg);
+    color: var(--clr-txt);
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    font-size: xx-large;
+    background-color: rgb(0, 43, 14);
+    width: 100%;
+    padding: .25em 2rem;
+}
+
+#app-wrapper {
+    width: 100%;
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+#ui {
+    background-color: rgb(53, 0, 0);
+    width: 350px;
+    padding: .25em 2rem;
+}
+
+#map-wrapper {
+    flex-grow: 1;
+    padding: .25em 2rem;
+    display: flex;
+}
+
+#map {
+    height: 90%;
+    width: 90%;
+    margin: auto;
+}
+footer {
+    width: 100%;
+    padding: 2em 2rem;
+    background-color: rgb(116, 52, 4);
+}
