@@ -14,16 +14,59 @@ const TILE_LAYER_PARAMS = {
     accessToken: ACCESS_TOKEN
 }
 const CENTER_INITIAL_GPS =[48.113, -1.67] //centered on Rennes
-const ZOOM_INIT = 14
+const INITIAL_ZOOM = 14
+
+const listeLignes = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
 
 var mymap = L.map('map')
 var tileLayer = L.tileLayer(TILE_LAYER_SOURCE, TILE_LAYER_PARAMS)
 
-mymap.setView(CENTER_INITIAL_GPS, ZOOM_INIT);
+mymap.setView(CENTER_INITIAL_GPS, INITIAL_ZOOM);
 tileLayer.addTo(mymap);
 
+function updateListOfLigne() {
+    let dropDown = document.querySelector('#dd-ligne')
+    dropDown.innerHTML = ''
+    listeLignes.forEach((ligne) => {
+        let option = document.createElement('option')
+        option.value = ligne
+        option.textContent = ligne
+        dropDown.appendChild(option)
+    })
+}
 
+updateListOfLigne()
+document.querySelector('#dd-ligne').addEventListener('change', () => {
+    drawSelectedLine()
+})
 
+function clearPolylines(map) {
+    for(i in map._layers) {
+        if(map._layers[i]._path != undefined) {
+            try {
+                map.removeLayer(map._layers[i]);
+            }
+            catch(e) {
+                console.log("problem with " + e + map._layers[i]);
+            }
+        }
+    }
+}
 
-
-
+async function drawSelectedLine() {
+    clearPolylines(mymap)
+    let ligne = document.querySelector('#dd-ligne').value
+    let ligneUrl=`https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-bus-topologie-parcours-td&q=&facet=idligne&facet=nomcourtligne&facet=type&facet=nomarretdepart&facet=nomarretarrivee&refine.nomcourtligne=${ligne}&refine.type=Principal`
+    let lineInfoResponse = await fetch(ligneUrl)
+    let lineInfo = await lineInfoResponse.json()
+    let lineCoordinates = await lineInfo.records[0].fields.parcours.coordinates
+    console.log(lineCoordinates)
+    let lineCoordinatesTransformed = []
+    lineCoordinates.forEach(point => {
+        lineCoordinatesTransformed = [...lineCoordinatesTransformed, [point[1], point[0]]]
+    })
+    let lineColor = lineInfo.records[0].fields.couleurtrace
+    let polyLineOptions = {color: lineColor};
+    let polyline = L.polyline(lineCoordinatesTransformed, polyLineOptions).addTo(mymap);
+    mymap.fitBounds(polyline.getBounds());
+}

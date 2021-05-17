@@ -22,9 +22,9 @@ body {
 
 header {
     font-size: xx-large;
-    background-color: rgb(0, 43, 14);
     width: 100%;
     padding: .25em 2rem;
+    border-bottom: var(--clr-txt) 1px solid;
 }
 
 #app-wrapper {
@@ -35,9 +35,19 @@ header {
 }
 
 #ui {
-    background-color: rgb(53, 0, 0);
     width: 350px;
     padding: .25em 2rem;
+    border-right: var(--clr-txt) 1px solid;
+}
+
+.label {
+    font-size: 1.5em;
+    margin-bottom: .25em;
+}
+
+#dd-ligne {
+    font-size: 1.25em;
+    width: 90%;
 }
 
 #map-wrapper {
@@ -54,5 +64,5 @@ header {
 footer {
     width: 100%;
     padding: 2em 2rem;
-    background-color: rgb(116, 52, 4);
+    border-top: var(--clr-txt) 1px solid;
 }
