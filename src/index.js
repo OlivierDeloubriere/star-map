@@ -53,6 +53,14 @@ function clearPolylines(map) {
     }
 }
 
+function lineCoordinatesWithProperLatLngOrder(originalData) {
+    let transformedData = []
+    originalData.forEach(point => {
+        transformedData = [...transformedData, [point[1], point[0]]]
+    })
+    return transformedData
+}
+
 async function drawSelectedLine() {
     clearPolylines(mymap)
     let ligne = document.querySelector('#dd-ligne').value
@@ -60,13 +68,12 @@ async function drawSelectedLine() {
     let lineInfoResponse = await fetch(ligneUrl)
     let lineInfo = await lineInfoResponse.json()
     let lineCoordinates = await lineInfo.records[0].fields.parcours.coordinates
-    console.log(lineCoordinates)
-    let lineCoordinatesTransformed = []
-    lineCoordinates.forEach(point => {
-        lineCoordinatesTransformed = [...lineCoordinatesTransformed, [point[1], point[0]]]
-    })
+    let lineCoordinatesTransformed = lineCoordinatesWithProperLatLngOrder(lineCoordinates)
+    //lineCoordinatesTransformed = [[48.109, -1.7],[48.129, -1.63]]
     let lineColor = lineInfo.records[0].fields.couleurtrace
-    let polyLineOptions = {color: lineColor};
-    let polyline = L.polyline(lineCoordinatesTransformed, polyLineOptions).addTo(mymap);
-    mymap.fitBounds(polyline.getBounds());
+    let polyLineOptions = {color: lineColor}
+    let polyline = L.polyline(lineCoordinatesTransformed, polyLineOptions)
+    
+    mymap.addLayer(polyline, {fill: false})
+    mymap.fitBounds(polyline.getBounds())
 }

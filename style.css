@@ -7,17 +7,21 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.dark-theme {
     background-color: var(--clr-bg);
     color: var(--clr-txt);
 }
-
-body {
+body, html {
     height: 100vh;
     width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: var(--clr-bg);
+    color: var(--clr-txt);
 }
 
 header {
@@ -46,7 +50,6 @@ header {
 }
 
 #dd-ligne {
-    font-size: 1.25em;
     width: 90%;
 }
 
