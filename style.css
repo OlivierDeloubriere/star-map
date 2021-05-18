@@ -55,13 +55,12 @@ header {
 
 #map-wrapper {
     flex-grow: 1;
-    padding: .25em 2rem;
     display: flex;
 }
 
 #map {
-    height: 90%;
-    width: 90%;
+    height: 100%;
+    width: 100%;
     margin: auto;
 }
 footer {

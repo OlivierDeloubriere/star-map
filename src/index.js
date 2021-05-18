@@ -16,7 +16,14 @@ const TILE_LAYER_PARAMS = {
 const CENTER_INITIAL_GPS =[48.113, -1.67] //centered on Rennes
 const INITIAL_ZOOM = 14
 
-const listeLignes = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
+const listeLignes = [
+    {nomcourt: 'C1', nomlong: "Cesson-Sévigné (Champs Blancs) <> Chantepie (Rosa Parks)"},
+    {nomcourt: 'C2', nomlong: "Saint-Grégoire (Champ Daguet) <> Rennes (Haut Sancé)"},
+    {nomcourt: 'C3', nomlong: "Rennes (Saint-Laurent) <> Rennes (Henri Fréville)"},
+    {nomcourt: 'C4', nomlong: "Rennes (ZA Saint-Sulpice) <> Saint-Grégoire (Grand Quartier)"},
+    {nomcourt: 'C5', nomlong: "Rennes (Patton) <> Rennes (Lycée Bréquigny)"},
+    {nomcourt: 'C6', nomlong: "Cesson-Sévigné (Rigourdière) <> Saint-Jacques-de-la-Lande (Aéroport)"}
+]
 
 var mymap = L.map('map')
 var tileLayer = L.tileLayer(TILE_LAYER_SOURCE, TILE_LAYER_PARAMS)
@@ -29,8 +36,8 @@ function updateListOfLigne() {
     dropDown.innerHTML = ''
     listeLignes.forEach((ligne) => {
         let option = document.createElement('option')
-        option.value = ligne
-        option.textContent = ligne
+        option.value = ligne.nomcourt
+        option.textContent = `${ligne.nomcourt} : ${ligne.nomlong}`
         dropDown.appendChild(option)
     })
 }
@@ -67,9 +74,8 @@ async function drawSelectedLine() {
     let ligneUrl=`https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-bus-topologie-parcours-td&q=&facet=idligne&facet=nomcourtligne&facet=type&facet=nomarretdepart&facet=nomarretarrivee&refine.nomcourtligne=${ligne}&refine.type=Principal`
     let lineInfoResponse = await fetch(ligneUrl)
     let lineInfo = await lineInfoResponse.json()
-    let lineCoordinates = await lineInfo.records[0].fields.parcours.coordinates
+    let lineCoordinates = lineInfo.records[0].fields.parcours.coordinates
     let lineCoordinatesTransformed = lineCoordinatesWithProperLatLngOrder(lineCoordinates)
-    //lineCoordinatesTransformed = [[48.109, -1.7],[48.129, -1.63]]
     let lineColor = lineInfo.records[0].fields.couleurtrace
     let polyLineOptions = {color: lineColor}
     let polyline = L.polyline(lineCoordinatesTransformed, polyLineOptions)
