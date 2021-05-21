@@ -12,7 +12,7 @@ export function getInitialisedMap() {
 
 export async function drawSelectedLine(map, ligne, clearAllFirst) {
     if(clearAllFirst) {
-        clearPolylines(map)
+        clearAllDrawnLines(map)
     }
     let ligneInfo = await API.getLigneInfo(ligne)
     let ligneCoordinates = API.getLigneCoordinates(ligneInfo)
@@ -26,7 +26,7 @@ export async function drawSelectedLine(map, ligne, clearAllFirst) {
     map.fitBounds(polyline.getBounds())
 }
 
-function clearPolylines(map) {
+function clearAllDrawnLines(map) {
     for(let i in map._layers) {
         if(map._layers[i]._path != undefined) {
             try {
