@@ -1,15 +1,15 @@
-export function getLigneURL(ligne) {
-    return `https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-bus-topologie-parcours-td&q=&facet=idligne&facet=nomcourtligne&facet=type&facet=nomarretdepart&facet=nomarretarrivee&refine.nomcourtligne=${ligne}&refine.type=Principal`
+export function getLigneURL(nomLigne) {
+    return `https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-bus-topologie-parcours-td&q=&facet=idligne&facet=nomcourtligne&facet=type&facet=nomarretdepart&facet=nomarretarrivee&refine.nomcourtligne=${nomLigne}&refine.type=Principal`
 }
 
-export async function getLigneInfo(ligne) {
-    let ligneUrl = getLigneURL(ligne)
+export async function getLigneInfo(nomLigne) {
+    let ligneUrl = getLigneURL(nomLigne)
     try {
         let ligneInfoResponse = await fetch(ligneUrl)
         let ligneInfo = await ligneInfoResponse.json()
         return ligneInfo
     } catch(e) {
-        console.log(`Une erreur s'est produite, impossible de trouver la ligne ${ligne} - ${e}`)
+        console.log(`Une erreur s'est produite, impossible de trouver la ligne ${nomLigne} - ${e}`)
     }
 }
 
